@@ -10,15 +10,6 @@
     
     <textarea id="peerConf" rows="10" cols="80" placeholder="Paste your peer.conf here"></textarea>
     <br><br>
-    
-    <label for="interfaceName">WireGuard Interface Name:</label>
-    <input type="text" id="interfaceName" value="wireguard2">
-    <br><br>
-    
-    <label for="homeNetwork">Home Network (CIDR):</label>
-    <input type="text" id="homeNetwork" value="192.168.28.0/24">
-    <br><br>
-    
     <button onclick="generateCommands()">Generate Mikrotik CLI commands</button>
     
     <h3>Generated Commands:</h3>
@@ -27,8 +18,6 @@
     <script>
         function generateCommands() {
             const conf = document.getElementById("peerConf").value;
-            const interfaceName = document.getElementById("interfaceName").value;
-            const homeNetwork = document.getElementById("homeNetwork").value;
             
             // Parse the peer.conf data
             const privateKey = conf.match(/PrivateKey\s*=\s*([^\s]+)/)[1];
@@ -44,11 +33,11 @@
             const subnet = address.split('/')[1];
             
             // Create Mikrotik commands
-            const wireguardInterfaceCommand = `/interface wireguard add name=${interfaceName} private-key="${privateKey}"`;
-            const wireguardPeerCommand = `/interface wireguard peers add interface=${interfaceName} public-key="${publicKey}" preshared-key="${presharedKey}" endpoint-address="${endpoint}" endpoint-port=${endpointPort} allowed-address="${allowedIPs}" persistent-keepalive=${persistentKeepalive}`;
-            const ipAddressCommand = `/ip address add address=${ipWithoutSubnet} interface=${interfaceName}`;
-            const firewallRuleCommand = `/ip firewall nat add chain=srcnat src-address=${homeNetwork} out-interface=${interfaceName} action=masquerade`;
-            const staticRouteCommand = `/ip route add dst-address=10.28.0.0/24 gateway=${interfaceName} distance=1 scope=30 target-scope=10 routing-table=main`;
+            const wireguardInterfaceCommand = `/interface wireguard add name=wireguard2 private-key="${privateKey}"`;
+            const wireguardPeerCommand = `/interface wireguard peers add interface=wireguard2 public-key="${publicKey}" preshared-key="${presharedKey}" endpoint-address="${endpoint}" endpoint-port=${endpointPort} allowed-address="${allowedIPs}" persistent-keepalive=${persistentKeepalive}`;
+            const ipAddressCommand = `/ip address add address=${ipWithoutSubnet} interface=wireguard2`;
+            const firewallRuleCommand = `/ip firewall nat add chain=srcnat src-address=192.168.28.0/24 out-interface=wireguard2 action=masquerade`;
+            const staticRouteCommand = `/ip route add dst-address=10.28.0.0/24 gateway=wireguard2 distance=1 scope=30 target-scope=10 routing-table=main`;
 
             // Output the commands
             document.getElementById("output").textContent = 
@@ -56,8 +45,7 @@
                 wireguardPeerCommand + "\n" +
                 ipAddressCommand + "\n" +
                 firewallRuleCommand + "\n" +
-                staticRouteCommand + "\n\n" +
-                `Az új ${interfaceName} interface-t szükséges egyszer ki-be kapcsolni!`;
+                staticRouteCommand;
         }
     </script>
 </body>
