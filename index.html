@@ -8,7 +8,17 @@
 <body>
     <h1>WireGuard config to Mikrotik RouterOS cli</h1>
     
-    <textarea id="peerConf" rows="10" cols="80" placeholder="Paste your peer.conf here"></textarea>
+    <textarea id="peerConf" rows="10" cols="80">[Interface]
+PrivateKey = 8RRv9f/WItM3FgX/w4FPk3cQFJlU=
+Address = 10.0.0.2/24	
+DNS = 1.1.1.1,8.8.8.8						
+
+[Peer]
+PublicKey = +ReaqN8bidykKWHtt2xpQFJVyOzmU=
+PresharedKey = /hs8u14peIDnIgv4aOT1RcpMzovb+Gaq68rP8Y=
+Endpoint = vpn.test.cloud:50001
+AllowedIPs = 0.0.0.0/0
+PersistentKeepalive = 25</textarea>
     <br><br>
     
     <label for="interfaceName">WireGuard Interface Name:</label>
