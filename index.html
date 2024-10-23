@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WireGuard config to Mikrotik RouterOS cli</title>
+    <title>Converting WireGuard config with preshared key into Mikrotik CLI commands</title>
 </head>
 <body>
-    <h1>WireGuard config to Mikrotik RouterOS cli</h1>
+    <h1>Converting WireGuard config with preshared key into Mikrotik CLI commands</h1>
     
     <textarea id="peerConf" rows="10" cols="80">[Interface]
 PrivateKey = 8RRv9f/WItM3FgX/w4FPk3cQFJlU=
@@ -67,7 +67,7 @@ PersistentKeepalive = 25</textarea>
                 ipAddressCommand + "\n" +
                 firewallRuleCommand + "\n" +
                 staticRouteCommand + "\n\n" +
-                `Az új ${interfaceName} interface-t szükséges egyszer ki-be kapcsolni!`;
+                `After entering the commands, it is necessary to toggle the ${interfaceName} interface off and on once!!`;
         }
     </script>
 </body>
